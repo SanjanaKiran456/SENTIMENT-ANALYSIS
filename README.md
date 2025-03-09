@@ -11,6 +11,7 @@ DOMAIN : DATA ANALYSIS
 DURATION : 4 WEEKS
 
 MENTOR : NEELA SANTHOSH KUMAR
+TASK - 4
 
 Explanation :
 The provided code performs sentiment analysis on IMDb movie plots using Natural Language Processing (NLP) with TextBlob. It follows a structured approach in a Jupyter Notebook to ensure clear documentation and reproducibility.
