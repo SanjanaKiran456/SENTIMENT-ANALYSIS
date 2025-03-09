@@ -1,0 +1,108 @@
+import nbformat as nbf
+
+# Create a new Jupyter Notebook
+nb = nbf.v4.new_notebook()
+
+# Notebook cells
+cells = []
+
+# Introduction markdown cell
+intro_text = """\
+# Sentiment Analysis of IMDb Movie Reviews
+
+This notebook performs sentiment analysis on IMDb movie plots using Natural Language Processing (NLP) with TextBlob.
+
+## Steps:
+1. **Load and preprocess the dataset**
+2. **Perform sentiment analysis using TextBlob**
+3. **Visualize sentiment distribution**
+4. **Extract insights**
+"""
+cells.append(nbf.v4.new_markdown_cell(intro_text))
+
+# Import libraries cell
+import_code = """\
+import pandas as pd
+from textblob import TextBlob
+import matplotlib.pyplot as plt
+"""
+cells.append(nbf.v4.new_code_cell(import_code))
+
+# Load dataset cell
+load_data_code = """\
+# Load dataset
+file_path = "/mnt/data/imdb movie dataset.csv"
+df = pd.read_csv(file_path)
+
+# Display basic info
+df.info()
+df.head()
+"""
+cells.append(nbf.v4.new_code_cell(load_data_code))
+
+# Data preprocessing cell
+preprocessing_code = """\
+# Drop missing plot values
+df = df.dropna(subset=['plot'])
+print(f"Dataset after removing missing plots: {df.shape}")
+"""
+cells.append(nbf.v4.new_code_cell(preprocessing_code))
+
+# Sentiment analysis function cell
+sentiment_function_code = """\
+# Sentiment analysis function
+def get_sentiment(text):
+    blob = TextBlob(text)
+    polarity = blob.sentiment.polarity
+    if polarity > 0:
+        return "Positive"
+    elif polarity < 0:
+        return "Negative"
+    else:
+        return "Neutral"
+"""
+cells.append(nbf.v4.new_code_cell(sentiment_function_code))
+
+# Apply sentiment analysis cell
+apply_sentiment_code = """\
+# Apply sentiment analysis
+df['Sentiment'] = df['plot'].apply(get_sentiment)
+
+# Display a few results
+df[['title', 'plot', 'Sentiment']].head()
+"""
+cells.append(nbf.v4.new_code_cell(apply_sentiment_code))
+
+# Sentiment distribution visualization cell
+visualization_code = """\
+# Display sentiment distribution
+sentiment_counts = df['Sentiment'].value_counts()
+plt.figure(figsize=(6,4))
+sentiment_counts.plot(kind='bar', color=['green', 'red', 'blue'])
+plt.xlabel("Sentiment")
+plt.ylabel("Count")
+plt.title("Sentiment Analysis of IMDb Movie Plots")
+plt.show()
+"""
+cells.append(nbf.v4.new_code_cell(visualization_code))
+
+# Insights cell
+insights_text = """\
+## Insights
+
+- The sentiment distribution provides an overview of how movies' plots are perceived.
+- A higher number of **Positive** sentiments indicate uplifting or optimistic plots.
+- A dominance of **Negative** sentiments may indicate darker or dramatic themes in movies.
+- The **Neutral** category includes plots that lack strong sentiment polarity.
+"""
+cells.append(nbf.v4.new_markdown_cell(insights_text))
+
+# Create the notebook
+nb.cells = cells
+
+# Save the notebook file
+notebook_path = "/mnt/data/IMDb_Sentiment_Analysis.ipynb"
+with open(notebook_path, "w") as f:
+    nbf.write(nb, f)
+
+notebook_path
